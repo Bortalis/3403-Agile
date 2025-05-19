@@ -1,0 +1,113 @@
+/* Css for base.html, specifically for the nav bar */
+.custom-navbar {
+  background-color: white;
+  border-bottom: 1px solid #dee2e6;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.custom-navbar .container {
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+}
+
+.navbar-brand {
+  font-size: 1.25rem;
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 500;
+}
+
+.nav-link {
+  color: #555555;
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+.nav-link:hover {
+  color: #000;
+}
+
+
+/* General page layout */
+body {
+  background-color: #f8f9fa;
+}
+
+.card {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+  padding: 1.25rem;
+  text-align: center;
+  height: 100%;
+}
+
+.bigger-text {
+ font-size: 3em;
+}
+
+.blue-main {
+  color: #007bff;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.gray-main {
+  color: #6c757d;
+  font-weight: normal;
+  margin-bottom: 1rem;
+}
+
+.grey-second {
+  color: #6c757d; 
+}
+
+.no-border {
+  border: none;
+}
+
+.form-lb {
+  display: flex;
+  text-align: left;
+  align-items: left;
+  justify-content: flex-start;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.center-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.center-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+
+.table-pad {
+  padding: 4 2 4 2;
+
+}
+
+
+/*group sidebar*/
+.sidebar {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+  padding: 1.25rem;
+  text-align: center;
+}
+
+/* you would only see this message if the css failed to link */
+.load-check {
+  display: none;
+}

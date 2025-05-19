@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Household Financial Overview</title>
+  <style>
+    body { font-family: sans-serif; margin: 1rem; }
+    h1 { text-align: center; }
+    .summary { margin-bottom: 1rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #aaa; padding: 0.5rem; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Household Financial Overview</h1>
+  <div class="summary">
+    <p><strong>Total Group Income:</strong> ${{ '%.2f' % group_income }}</p>
+    <p><strong>Total Group Expenses:</strong> ${{ '%.2f' % group_expenses }}</p>
+    <p><strong>Group Net Balance:</strong> ${{ '%.2f' % group_net_balance }}</p>
+  </div>
+  <h2>Member Transactions (latest 10)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>User ID</th><th>Date</th><th>Type</th><th>Category</th><th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in transactions %}
+      <tr>
+        <td>{{ t.usid }}</td>
+        <td>{{ t.date }}</td>
+        <td>{{ t.type.title() }}</td>
+        <td>{{ t.category.title() }}</td>
+        <td>
+          {% if t.type == 'expense' %}-{% else %}+{% endif %}
+          ${{ '%.2f' % t.amount }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

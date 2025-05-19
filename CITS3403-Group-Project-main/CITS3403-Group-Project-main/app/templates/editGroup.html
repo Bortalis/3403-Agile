@@ -1,0 +1,20 @@
+{% extends "base.html" %} {% block title %}Upload CSV | HomeFinance Tracker{%
+endblock %} {% block content %}
+<div class="container py-5">
+  <h1>Edit group</h1>
+
+  <hr class="my-4" />
+  <form method="POST" action="{{ url_for('main.up_edit_group', group_id=groupinfo) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <h2>Name</h2>
+    <div class="mb-3">
+      <input type="text" class="form-control" id="name" name="name" required />
+    </div>
+    <h2>Type</h2>
+    <div class="mb-3">
+      <input type="text" class="form-control" id="type" name="type" required />
+    </div>
+    <button type="submit" class="btn btn-success">Edit Group</button>
+  </form>
+</div>
+{% endblock %}

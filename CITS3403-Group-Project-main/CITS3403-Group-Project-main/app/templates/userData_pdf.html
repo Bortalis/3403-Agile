@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Financial Dashboard</title>
+  <style>
+    body { font-family: sans-serif; margin: 1rem; }
+    h1 { text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #aaa; padding: 0.5rem; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>My Financial Dashboard</h1>
+  <p><strong>Total Income:</strong> ${{ '%.2f' % total_income }}</p>
+  <p><strong>Total Expenses:</strong> ${{ '%.2f' % total_expense }}</p>
+  <p><strong>Net Balance:</strong> ${{ '%.2f' % net_balance }}</p>
+
+  <h2>Recent Transactions</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th><th>Type</th><th>Category</th><th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in transactions %}
+      <tr>
+        <td>{{ t.date }}</td>
+        <td>{{ t.type.title() }}</td>
+        <td>{{ t.category.title() }}</td>
+        <td>
+          {% if t.type == 'expense' %}-{% else %}+{% endif %}
+          ${{ '%.2f' % t.amount }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

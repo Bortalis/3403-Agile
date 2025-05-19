@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {# expose CSRF token for our fetch() calls #}
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+    <title>{% block title %}HomeFinance Tracker{% endblock %}</title>
+
+    {# 1) Bootstrap CSS #}
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT"
+      crossorigin="anonymous"
+    />
+    {# 2) Custom overrides #}
+    <link
+      href="{{ url_for('static', filename='css/style.css') }}"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="d-flex flex-column min-vh-100">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+      <div class="container">
+        <a href="{{ url_for('main.landing') }}" class="navbar-brand">HomeFinance</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.landing') }}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.dashboard') }}">My Data</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.group_dashboard', group_id=1) }}">My Groups</a>
+            </li>
+            {% if current_user.is_authenticated %}
+              <li class="nav-item">
+                <span class="nav-link">Hello, {{ current_user.fname }}!</span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.login') }}">Login / Sign Up</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="container flex-grow-1">
+      {# JS flash messages #}
+      <div
+        id="alert-container"
+        class="position-fixed top-0 end-0 p-3"
+        style="z-index: 1050"
+      ></div>
+
+      {% block content %}{% endblock %}
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-light border-top py-3 mt-auto">
+      <div class="container text-center">
+        <small class="text-muted">
+          © {{ current_year if current_year else 2025 }} HomeFinance Tracker. All rights reserved.
+        </small>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS bundle -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Chart.js (provides global Chart) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Your ES6 module -->
+    <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- Per-page scripts -->
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

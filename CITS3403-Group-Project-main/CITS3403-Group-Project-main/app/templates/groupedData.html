@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}{{ group.grname }} | HomeFinance Tracker{% endblock %}
+
+{% block content %}
+
+<div class="row center-center">
+  <div class="col-lg-10 mb-2">
+    <div class="card shadow" >
+      <div class="card-body">
+        <!-- Header with Export link -->
+        <div class="center-between">
+          <h2 class="blue-main">{{ group.grname }} Financial Overview</h2>
+          <a
+            href="{{ url_for('main.export_group_pdf', group_id=group.grid) }}"
+            class="btn btn-outline-primary btn-sm"
+          >
+            Export to PDF
+          </a>
+        </div>
+
+        <h5 class="gray-main"> Combined summary for all members of your shared group </h5>
+
+        <!-- Summary Cards -->
+        <div class="row mb-2">
+          <div class="col-md-4 mb-3">
+            <div class="card border-success">
+              <h5 class="text-success">Total Group Income</h5>
+              <h3> ${{ '%.2f' % group_income }} </h3>            
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card border-danger">
+              <h5 class="text-danger">Total Group Expenses</h5>
+              <h3> ${{ '%.2f' % group_expenses }} </h3>            
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card border-primary">
+              <h5 class="text-primary">Group Net Balance</h5>
+              <h3> ${{ '%.2f' % group_net_balance }} </h3>            
+            </div>
+          </div>
+        </div>
+
+        <!-- Group Trend & Breakdown Charts -->
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <div class="card px-0">
+              <h4>Monthly Spending Trend</h4>
+              <canvas id="groupTrendChart" style="height:16rem;"></canvas>
+            </div>
+          </div>
+          <div class="col-md-6 mb-4">
+            <div class="card px-0">
+              <h4>Expense Breakdown by Category</h4>
+              <canvas id="groupCategoryChart" style="height:16rem;"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions Table -->
+        <h4 class="mb-3">Recent Transactions</h4>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead class="table-light">
+              <tr class="text-center">
+                <th>First Name</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for t in recent_transactions %}
+              <tr class="text-center">
+                <td>{{ t.fname }}</td>
+                <td>{{ t.date.strftime('%Y-%m-%d') }}</td>
+                <td>{{ t.type.title() }}</td>
+                <td>{{ t.category.title() }}</td>
+                <td class="{% if t.type.lower() == 'expense' %}text-danger{% else %}text-success{% endif %}">
+                  {% if t.type.lower() == 'expense' %}-{% else %}+{% endif %}${{ '%.2f' % t.amount }}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Group Monthly Trend data
+  const trendLabels   = {{ monthly_labels   | tojson }};
+  const trendIncomes  = {{ monthly_incomes  | tojson }};
+  const trendExpenses = {{ monthly_expenses | tojson }};
+
+  // Monthly Spending Trend (line chart)
+  new Chart(
+    document.getElementById('groupTrendChart'),
+    {
+      type: 'line',
+      data: {
+        labels: trendLabels,
+        datasets: [
+          { label: 'Income', data: trendIncomes, fill: false, borderWidth: 2 },
+          { label: 'Expense', data: trendExpenses, fill: false, borderWidth: 2 }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: { title: { display: true, text: 'Month' } },
+          y: { beginAtZero: true }
+        }
+      }
+    }
+  );
+
+  // Group Expense by Category data
+  const catLabels   = {{ category_labels   | tojson }};
+  const catExpenses = {{ category_expenses | tojson }};
+
+  // Expense Breakdown by Category (pie chart)
+  new Chart(
+    document.getElementById('groupCategoryChart'),
+    {
+      type: 'pie',
+      data: {
+        labels: catLabels,
+        datasets: [{ data: catExpenses }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } }
+      }
+    }
+  );
+</script>
+{% endblock %}

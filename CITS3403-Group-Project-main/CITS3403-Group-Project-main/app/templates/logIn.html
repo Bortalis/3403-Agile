@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Log In | HomeFinance Tracker{% endblock %}
+
+{% block content %}
+
+<div class="center-center">
+  <div class="card shadow w-100" style="max-width:24rem;">
+    <div class="card-body">
+      <h2 class="blue-main"> Welcome Back </h2>
+
+      <form method="POST" action="{{ url_for('main.login') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="mb-3">
+          <label for="username" class="form-label">Email</label>
+          <input type="email" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-4">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">
+          Log In
+        </button>
+      </form>
+
+      <div class="mt-3">
+        <p class="text-secondary mb-2">New here?</p>
+        <a href="{{ url_for('main.signup') }}"
+           class="btn btn-outline-secondary w-100">
+          Sign Up
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

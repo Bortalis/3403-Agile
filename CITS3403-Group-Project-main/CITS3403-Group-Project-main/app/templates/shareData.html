@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Share Data | HomeFinance Tracker{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1>Share Your Data with a Friend</h1>
+  <form method="POST" action="{{ url_for('main.share_data') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="mb-3">
+      <label for="friend_email" class="form-label">Friend's Email</label>
+      <input type="email" class="form-control" id="friend_email" name="friend_email" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Share</button>
+  </form>
+</div>
+{% endblock %}

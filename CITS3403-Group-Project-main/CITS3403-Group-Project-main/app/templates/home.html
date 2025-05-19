@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block title %}Home | HomeFinance Tracker{% endblock %}
+
+{% block content %}
+
+  <!-- Main welcome -->
+  <div class="text-center py-5">
+    <h1 class="blue-main bigger-text">Welcome to HomeFinance Tracker</h1>
+    <h5 class="gray-main mb-4">
+      Manage your finances individually or with a group. Upload data, visualize expenses, and collaborate on household budgets.
+    </h5>
+
+    {% if not current_user.is_authenticated %}
+    <div class="center-center">
+      <a href="{{ url_for('main.signup') }}" class="btn btn-lg btn-primary">Create Account</a>
+      <a href="{{ url_for('main.login') }}" class="btn btn-lg btn-outline-primary">Log In</a>
+    </div>
+    {% endif %}
+
+  </div>
+
+  <div class="container my-5">
+
+    <!-- Instructive steps -->
+    <div class="text-center mb-4">
+      <h3 class="blue-main">Get Started in 5 Simple Steps</h3>
+    </div>
+    <div class="row g-3 justify-content-center mb-5">
+      {% set steps = [
+        'Create Account',
+        'Sign In',
+        'Make Groups',
+        'Log Activity',
+        'View Reports'] %}
+      {% for num in range(steps|length) %}
+      <div class="col-6 col-md-4 col-xl-2">
+        <div class="card no-border">
+          <div>
+            <span class="badge bg-primary rounded-circle"
+              style="width:3rem; height:3rem; line-height:2rem; font-size:1.25rem;">
+              {{ num + 1 }}
+            </span>
+            <h5>{{ steps[num] }}</h5>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Analytic preview -->
+    <div class="text-center mt-4">
+      <h3 class="blue-main">Live Analytics Preview</h3>
+    </div>
+    <div class="row g-4 justify-content-center mb-4">
+      <!-- Line Chart -->
+      <div class="col-md-6">
+        <div class="card">
+          <h5>Monthly Spending Trend</h5>
+          <canvas id="miniLineChart"></canvas>
+        </div>
+      </div>
+      <!-- Pie Chart -->
+      <div class="col-md-6">
+        <div class="card">
+          <h5>Expense Breakdown</h5>
+          <canvas id="miniPieChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE SPOTLIGHT -->
+    <div class="row text-center g-4 mb-5">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="mb-3 display-6">🔒</div>
+            <h5>Secure Login</h5>
+            <p>256-bit encrypted sessions keep your data safe.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="mb-3 display-6">📊</div>
+            <h5>Interactive Charts</h5>
+            <p>Drill down by category or month to find insights.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+              <div class="mb-3 display-6">🗂️</div>
+              <h5>CSV Import/Export</h5>
+              <p>Bulk upload via CSV or download PDF reports in one click.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TESTIMONIAL -->
+    <div class="mb-5">
+      <blockquote class="blockquote text-center">
+        <p>
+          “HomeFinance Tracker has completely transformed how I budget with my roommate—
+          simple, clear, and secure!”
+        </p>
+        <footer class="blockquote-footer">
+          Alex R., <cite title="Source Title">Beta Tester</cite>
+        </footer>
+      </blockquote>
+    </div>
+
+    <!-- FAQ ACCORDION -->
+    <h3 class="blue-main">Frequently Asked Questions</h3>
+    <div class="accordion" id="faqAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faqHeadingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#faqCollapseOne" aria-expanded="false"
+                  aria-controls="faqCollapseOne">
+            Is my data private?
+          </button>
+        </h2>
+        <div id="faqCollapseOne" class="accordion-collapse collapse"
+              aria-labelledby="faqHeadingOne" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            All your data is stored securely on our servers and only you (and your invited group members) can view it.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faqHeadingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#faqCollapseTwo" aria-expanded="false"
+                  aria-controls="faqCollapseTwo">
+            Can I share a group with multiple people?
+          </button>
+        </h2>
+        <div id="faqCollapseTwo" class="accordion-collapse collapse"
+              aria-labelledby="faqHeadingTwo" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Yes—create a group and invite any number of members. All transactions are aggregated automatically.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faqHeadingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#faqCollapseThree" aria-expanded="false"
+                  aria-controls="faqCollapseThree">
+            What CSV format is supported?
+          </button>
+        </h2>
+        <div id="faqCollapseThree" class="accordion-collapse collapse"
+              aria-labelledby="faqHeadingThree" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            We accept CSVs with columns: date (YYYY-MM-DD), type (income/expense), category, amount. See our docs for an example.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Mini Line Chart (Income vs Expense)
+    new Chart(document.getElementById('miniLineChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+        datasets: [
+          {
+            label: 'Income',
+            data: [0,1200,1500,1800,2200,3000],
+            fill: true,
+            tension: 0.3,
+            pointRadius: 3
+          },
+          {
+            label: 'Expense',
+            data: [450,400,380,350,300,250],
+            fill: true,
+            tension: 0.3,
+            pointRadius: 3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'top' } },
+        scales: {
+          x: { title: { display: true, text: 'Month' } },
+          y: { beginAtZero: true, title: { display: true, text: 'Amount ($)' } }
+        }
+      }
+    });
+
+    // Mini Pie Chart (Expense by Category)
+    new Chart(document.getElementById('miniPieChart').getContext('2d'), {
+      type: 'pie',
+      data: {
+        labels: ['Food','Rent','Utilities','Entertainment','Others'],
+        datasets: [{
+          data: [350,500,200,150,100]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+  </script>
+{% endblock %}

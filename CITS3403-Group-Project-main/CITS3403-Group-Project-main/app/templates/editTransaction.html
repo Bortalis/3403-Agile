@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Upload CSV | HomeFinance Tracker{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1>Edit Transactions</h1>
+
+  <hr class="my-5">
+
+  <!-- Form to edit transaction-->
+  <h2>Edit transaction</h2>
+  <form method="POST" action="{{ url_for('main.update_transaction', tr_id=transaction.trid)}}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <!-- your date, category, amount, type fields here -->
+    <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" class="form-control" id="date" name="date" required>
+    </div>
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <input type="text" class="form-control" id="category" name="category" required>
+    </div>
+    <div class="mb-3">
+      <label for="amount" class="form-label">Amount</label>
+      <input type="number" step="0.01" class="form-control" id="amount" name="amount" required>
+    </div>
+    <div class="mb-4">
+      <label class="form-label">Type</label>
+        <label>
+            <select class="form-select" name="type" required>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+        </label>
+    </div>
+    <button type="submit" class="btn btn-success">Edit Transaction</button>
+  </form>
+</div>
+{% endblock %}
